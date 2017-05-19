@@ -1,0 +1,47 @@
+page-signup {
+
+    p {
+        font-size: 0.8em;
+        color: #d2d2d2;
+    }
+
+    ion-label {
+        margin-left: 5px;
+    }
+
+    ion-input {
+        padding: 5px;
+    }
+
+    .invalid {
+        border-bottom: 1px solid #FF6153;
+    }
+
+    .error-message .item-inner {
+        border-bottom: 0 !important;
+    }
+
+    .no-scroll .scroll-content{
+     overflow: hidden;
+    }
+}
+
+.grad {
+  background: #00c6ff; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #00c6ff , #0072ff); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #00c6ff, #0072ff); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #00c6ff, #0072ff); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #00c6ff , #0072ff); /* Standard syntax */
+}
+
+.bar-deepblue-bordertop {
+    border-top: solid rgba(238, 238, 238, 0.8) 1px; 
+    }
+
+.btnBottom{
+    background-color: #387ef5; /* For browsers that do not support gradients */
+  background-color: -webkit-linear-gradient(left, #387ef5 , #387ef5); /* For Safari 5.1 to 6.0 */
+  background-color: -o-linear-gradient(right, #387ef5, #387ef5); /* For Opera 11.1 to 12.0 */
+  background-color: -moz-linear-gradient(right, #387ef5, #387ef5); /* For Firefox 3.6 to 15 */
+  background-color: linear-gradient(to right, #387ef5 , #387ef5); /* Standard syntax */
+}
