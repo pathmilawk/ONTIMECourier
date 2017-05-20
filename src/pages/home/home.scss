@@ -4,6 +4,26 @@ page-home {
 }
 
 
+
+  #map {
+      height: 100%;
+  }
+
+.div1 {
+    width: 100%;
+    position: absolute;
+    z-index: 2;
+}
+
+.div2 {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+
+
+
 }
 .grad {
   background: #00c6ff; /* For browsers that do not support gradients */

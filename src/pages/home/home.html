@@ -7,12 +7,35 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content scroll="false">
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <div class="fromDiv" id="fromDiv">
+		<ion-searchbar id="searchbar1" [(ngModel)]="autocomplete.query" [showCancelButton]="true" (ionInput)="updateSearch()" (ionCancel)="dismiss()"
+			placeholder="Delivery Location">
+		</ion-searchbar>
+		<ion-list>
+			<ion-item *ngFor="let item of autocompleteItems" (click)="chooseItem(item)">
+				<a style="text-decoration: none" href="#">{{ item.description }}</a>
+			</ion-item>
+		</ion-list>
+	</div>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <div class="toDiv" id="toDiv">
+    <ion-searchbar id="searchbar2" [(ngModel)]="autocomplete2.query" [showCancelButton]="true" (ionInput)="updateSearch2()" (ionCancel)="dismiss()"
+      placeholder="Delivery Location">
+    </ion-searchbar>
+    <ion-list>
+      <ion-item *ngFor="let item2 of autocompleteItems2" (click)="chooseItem2(item2)" >
+        <a style="text-decoration: none" href="#">{{ item2.description }}</a>
+      </ion-item>
+    </ion-list>
+  </div>
+
+<div>
+  <button ion-button full (click)="drawPath()">Calculate Fee</button>
+</div>
+
+	<div class="div2">
+		<div id="map"></div>
+	</div>
 </ion-content>
