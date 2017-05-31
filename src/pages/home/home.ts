@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import { NavController, Events, NavParams } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
+
+import { Proceed } from '../proceed/proceed';
 
 declare var google;
 
@@ -10,25 +12,27 @@ declare var google;
 })
 export class HomePage {
 
-  //Variables
 deliveryFrom: String;
 
-address: any = {
-  place: '',
-  set: false,
-};
-placesService: any;
-map: any;
-markers = [];
-placedetails: any;
+	address: any = {
+		place: '',
+		set: false,
+	};
+	placesService: any;
+	map: any;
+	markers = [];
+	placedetails: any;
 
-autocompleteItems: any;
-autocompleteItems2: any;
-autocomplete: any;
-autocomplete2: any;
-acService: any;
+	distance:any;
+	duration:any;
 
-  constructor(public navCtrl: NavController, public events: Events, public atrCtrl: AlertController) {
+	autocompleteItems: any;
+	autocompleteItems2: any;
+	autocomplete: any;
+	autocomplete2: any;
+	acService: any;
+
+  constructor(public navCtrl: NavController, public events: Events, public atrCtrl: AlertController, public navPrmCtrl: NavParams) {
     this.deliveryFrom = ""
   }
 
@@ -37,93 +41,94 @@ acService: any;
     }
 
     ngOnInit() {
-  this.initMap();
-  this.initPlacedetails();
-
-  this.acService = new google.maps.places.AutocompleteService();
-  this.autocompleteItems = [];
-	this.autocompleteItems2 = [];
-
-  this.autocomplete = {
-    query: ''
-  };
-
-  this.autocomplete2 = {
-    query: ''
-  };
-
-}
-
-
-private initMap() {
-
-  var point = { lat: 6.9147682, lng: 79.9731200 };
-
-//current location
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-					});
-
 			
+			this.initMap();
+			this.initPlacedetails();
 
-  let divMap = (<HTMLInputElement>document.getElementById('map'));
+			this.acService = new google.maps.places.AutocompleteService();
+			this.autocompleteItems = [];
+			this.autocompleteItems2 = [];
 
-    this.map = new google.maps.Map(divMap, {
-      center: point,
-      zoom: 15,
-      disableDefaultUI: true,
-      draggable: true,
-      zoomControl: true
-    });
+			this.autocomplete = {
+				query: ''
+			};
+
+			this.autocomplete2 = {
+				query: ''
+			};
+
+		}
 
 
-	
+	private initMap() {
 
-    var marker = new google.maps.Marker({
-      position: point,
-      map: this.map,
-      title: 'Current location',
+		var point = { lat: 6.9147682, lng: 79.9731200 };
+
+		//current location
+		navigator.geolocation.getCurrentPosition(function (position) {
+			var pos = {
+				lat: position.coords.latitude,
+				lng: position.coords.longitude
+			};
+		});
+
+
+
+		let divMap = (<HTMLInputElement>document.getElementById('map'));
+
+		this.map = new google.maps.Map(divMap, {
+			center: point,
+			zoom: 15,
+			disableDefaultUI: true,
+			draggable: true,
+			zoomControl: true
+		});
+
+
+
+
+		var marker = new google.maps.Marker({
+			position: point,
+			map: this.map,
+			title: 'Current location',
 			animation: google.maps.Animation.DROP
-    });
+		});
 
 		//add marker to current location
-		 marker.addListener('click', toggleBounce);
+		marker.addListener('click', toggleBounce);
 
-		       function toggleBounce() {
-        if (marker.getAnimation() !== null) {
-          marker.setAnimation(null);
-        } else {
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-        }
-      }
-}
+		function toggleBounce() {
+			if (marker.getAnimation() !== null) {
+				marker.setAnimation(null);
+			} else {
+				marker.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		}
+	}
 
 
 
 
 private initPlacedetails() {
-  this.placedetails = {
-    address: '',
-    lat: '',
-    lng: '',
-    components: {
-      route: { set: false, short: '', long: '' },                           // calle
-      street_number: { set: false, short: '', long: '' },                   // numero
-      sublocality_level_1: { set: false, short: '', long: '' },             // barrio
-      locality: { set: false, short: '', long: '' },                        // localidad, ciudad
-      administrative_area_level_2: { set: false, short: '', long: '' },     // zona/comuna/partido
-      administrative_area_level_1: { set: false, short: '', long: '' },     // estado/provincia
-      country: { set: false, short: '', long: '' },                         // pais
-      postal_code: { set: false, short: '', long: '' },                     // codigo postal
-      postal_code_suffix: { set: false, short: '', long: '' },              // codigo postal - sufijo
-    }
-  };
-}
+		this.placedetails = {
+			address: '',
+			lat: '',
+			lng: '',
+			components: {
+				route: { set: false, short: '', long: '' },                           // calle
+				street_number: { set: false, short: '', long: '' },                   // numero
+				sublocality_level_1: { set: false, short: '', long: '' },             // barrio
+				locality: { set: false, short: '', long: '' },                        // localidad, ciudad
+				administrative_area_level_2: { set: false, short: '', long: '' },     // zona/comuna/partido
+				administrative_area_level_1: { set: false, short: '', long: '' },     // estado/provincia
+				country: { set: false, short: '', long: '' },                         // pais
+				postal_code: { set: false, short: '', long: '' },                     // codigo postal
+				postal_code_suffix: { set: false, short: '', long: '' },              // codigo postal - sufijo
+			}
+		};
+	}
 
-private reset() {
+	private reset() {
 		this.initPlacedetails();
 		this.address.place = '';
 		this.address.set = false;
@@ -172,7 +177,7 @@ private reset() {
 		var marker = new google.maps.Marker({
 			map: this.map,
 			position: placeLoc,
-      title: place.placeName
+			title: place.placeName
 		});
 		this.markers.push(marker);
 	}
@@ -194,7 +199,7 @@ private reset() {
 		this.acService.getPlacePredictions(config, function (predictions, status) {
 			console.log('modal > getPlacePredictions > status > ', status);
 			self.autocompleteItems = [];
-		
+
 
 			if (predictions != null) {
 				predictions.forEach(function (prediction) {
@@ -203,12 +208,12 @@ private reset() {
 			}
 
 
-		});console.log( this.autocomplete.query+"mnmnm");
+		}); console.log(this.autocomplete.query + "mnmnm");
 	}
 
 
 
-updateSearch2() {
+	updateSearch2() {
 		console.log('modal > updateSearch');
 
 		if (this.autocomplete2.query == '') {
@@ -240,19 +245,19 @@ updateSearch2() {
 
 
 
-	getPalceName(item: any){
+	getPalceName(item: any) {
 
-		var placeName=item.description;
+		var placeName = item.description;
 		return placeName;
 	}
 
-	
+
 
 	chooseItem(item: any) {
 		console.log('modal > chooseItem > item > ', item.description);
 		if (item) {
 			this.address.place = item.description;
-console.log(this.address.place);
+			console.log(this.address.place);
 			// Update Value in search box
 			this.autocomplete = {
 				query: item.description
@@ -271,68 +276,217 @@ console.log(this.address.place);
 
 	chooseItem2(item: any) {
 		console.log('modal > chooseItem > item > ', item.description);
+
 		if (item) {
+
 			this.address.place = item.description;
-console.log(this.address.place);
+			console.log(this.address.place);
+
 			// Update Value in search box
 			this.autocomplete2 = {
 				query: item.description
 			};
 
+if(this.autocomplete.query!=""){
 			// get details
-			this.getPlaceDetail(item.place_id);
+			this.getPlaceDetail(item.place_id);}
 			this.autocompleteItems2 = [];
 		}
 
-
-//console.log('saman'+this.fromValue.query);
+		this.drawPath();
+		this.getDistance();
+		//console.log('saman'+this.fromValue.query);
 
 	}
+
+
+
+	// Sets the map on all markers in the array.
+	setMapOnAll(map) {
+		for (var i = 0; i < this.markers.length; i++) {
+			this.markers[i].setMap(map);
+		}
+	}
+
+	// Removes the markers from the map, but keeps them in the array.
+	clearMarkers() {
+		this.setMapOnAll(null);
+	}
+
+
+
+
+
+
 
 	//draw path when click
-	drawPath(){
+	drawPath() {
 
-			var directionsService = new google.maps.DirectionsService;
-			var directionsDisplay = new google.maps.DirectionsRenderer;	
+		var directionsService = new google.maps.DirectionsService;
+		var directionsDisplay = new google.maps.DirectionsRenderer;
 
-					directionsDisplay.setMap(this.map);
-      		this.calculateAndDisplayRoute(directionsService, directionsDisplay);
+		if (this.autocomplete.query != '' && this.autocomplete2.query != '') {
+			console.log("drawPath > from: " + directionsService + "to: " + directionsDisplay);
 
-			if(this.autocomplete.query != '')
-			{
-					console.log("drawPath > from: "+directionsService+"to: " +directionsDisplay);
-			}
-			else
-			{
-        this.showAlert();
-			}
+			directionsDisplay.setMap(this.map);
+			this.calculateAndDisplayRoute(directionsService, directionsDisplay);
+			this.searchComplete();
+			
+		}
+		else {
+			this.autocomplete2.query = null;
+			this.setMapOnAll(null);
+			this.showAlert();
+
+		}
 
 
 	}
 
-//show alert
-  showAlert() {
-    let alert = this.atrCtrl.create({
-      title: 'Alert!',
-      subTitle: 'Please fill From and To location',
-      buttons: ['OK']
-    });
-    alert.present();
-  }
+	//show continue button when place serche completed
+	public itemClicked: boolean = false;
 
-//get location and draw path
-	      calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        directionsService.route({
-          origin: this.autocomplete.query,
-          destination: this.autocomplete2.query,
-          travelMode: 'DRIVING'
-        }, function(response, status) {
-          if (status === 'OK') {
-            directionsDisplay.setDirections(response);
-            
-          } else {
-           // window.alert('Directions request failed due to ' + status);
-          }
-        });
+	public searchComplete() {
+
+		this.itemClicked = true;
+	}
+
+	//show alert
+	showAlert() {
+		let alert = this.atrCtrl.create({
+			title: 'Alert!',
+			subTitle: 'Please fill start location and deliver location',
+			buttons: ['OK']
+		});
+		alert.present();
+	}
+
+	//get location and draw path
+	calculateAndDisplayRoute(directionsService, directionsDisplay) {
+		directionsService.route({
+			origin: this.autocomplete.query,
+			destination: this.autocomplete2.query,
+			travelMode: 'DRIVING'
+		}, function (response, status) {
+			if (status === 'OK') {
+				directionsDisplay.setDirections(response);
+
+			} else {
+				// window.alert('Directions request failed due to ' + status);
 			}
+		});
+	}
+
+	//get distance and time
+	getDistance() {
+
+
+		var origin1 = null;
+		var origin2 = this.autocomplete.query;
+		var destinationA = this.autocomplete2.query;
+		var destinationB = null;
+
+		var geocoder = new google.maps.Geocoder();
+
+		//from location
+		geocoder.geocode({ 'address': this.autocomplete.query }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+
+				origin1 = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+				//origin1.lng=;
+
+				//alert("location : " + origin1); 
+			} else {
+				alert("Something got wrong " + status);
+			}
+		});
+
+
+		//to location
+		geocoder.geocode({ 'address': this.autocomplete2.query }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+
+				destinationB = new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng());;
+				//var b=results[0].geometry.location.lng();
+
+				//alert("location : " + origin1+'fdfd'+origin2); 
+
+				var service = new google.maps.DistanceMatrixService;
+
+				service.getDistanceMatrix({
+					origins: [origin1, origin2],
+					destinations: [destinationA, destinationB],
+					travelMode: 'DRIVING',
+					unitSystem: google.maps.UnitSystem.METRIC,
+					avoidHighways: false,
+					avoidTolls: false
+				}, function (response, status) {
+					if (status !== 'OK') {
+						alert('Error was: ' + status);
+					} else {
+
+
+						var origins = response.originAddresses;
+						var destinations = response.destinationAddresses;
+
+						for (var i = 0; i < origins.length; i++) {
+							var results = response.rows[i].elements;
+							console.log(results);
+							for (var j = 0; j < results.length; j++) {
+								var element = results[j];
+								var distance = element.distance.text;
+								var duration = element.duration.text;
+								var from = origins[i];
+								var to = destinations[j];
+							}
+						}
+
+						console.log(distance + " dd " + duration);
+
+						this.distance=distance;
+						this.duration=duration;
+						var arr={dis:distance,dur:duration};
+
+						return arr;
+
+
+					}
+				});
+
+
+			} else {
+				alert("Something got wrong " + status);
+			}
+		});
+
+
+	}
+
+
+	dismiss(myText: any) {
+		myText = null;
+
+		this.clearMarkers();
+
+	}
+
+	//go to proceed interface
+	showProceed() {
+		this.initMap();
+
+		this.itemClicked = false;
+
+		
+		
+
+
+				let data={
+					add1: this.autocomplete.query,
+					add2: this.autocomplete2.query
+				};
+		
+		this.navCtrl.push(Proceed,data);
+		this.autocomplete.query = null;
+		this.autocomplete2.query = null;
+	}
 }

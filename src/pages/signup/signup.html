@@ -53,11 +53,27 @@
    <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
 
     <ion-item style="padding-left:3%;padding-right:3%;">
-      <ion-input formControlName="name" type="text" placeholder="Your name"
-        [class.invalid]="!signupForm.controls.name.valid && signupForm.controls.name.dirty"></ion-input>
+      <ion-input formControlName="fname" type="text" placeholder="Your first name"
+        [class.invalid]="!signupForm.controls.fname.valid && signupForm.controls.fname.dirty"></ion-input>
     </ion-item>
-    <ion-item class="error-message" style="padding-left:3%;padding-right:3%;" *ngIf="!signupForm.controls.name.valid  && signupForm.controls.name.dirty">
-      <p>Name cannot contain numerals.</p>
+    <ion-item class="error-message" style="padding-left:3%;padding-right:3%;" *ngIf="!signupForm.controls.fname.valid  && signupForm.controls.fname.dirty">
+      <p>First name cannot contain numerals.</p>
+    </ion-item>
+
+    <ion-item style="padding-left:3%;padding-right:3%;">
+      <ion-input formControlName="lname" type="text" placeholder="Your last name"
+        [class.invalid]="!signupForm.controls.lname.valid && signupForm.controls.lname.dirty"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" style="padding-left:3%;padding-right:3%;" *ngIf="!signupForm.controls.lname.valid  && signupForm.controls.lname.dirty">
+      <p>Last name cannot contain numerals.</p>
+    </ion-item>
+
+    <ion-item style="padding-left:3%;padding-right:3%;">
+      <ion-input formControlName="contact" type="text" placeholder="Your contact number"
+        [class.invalid]="!signupForm.controls.contact.valid && signupForm.controls.contact.dirty"></ion-input>
+    </ion-item>
+    <ion-item class="error-message" style="padding-left:3%;padding-right:3%;" *ngIf="!signupForm.controls.contact.valid  && signupForm.controls.contact.dirty">
+      <p>Invalid contact number.</p>
     </ion-item>
 
     <ion-item style="padding-left:3%;padding-right:3%;">

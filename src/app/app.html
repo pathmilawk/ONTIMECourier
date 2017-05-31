@@ -1,4 +1,4 @@
-<ion-menu [content]="content">
+<ion-menu [content]="content" *ngIf="!userType">
   <ion-header>
     <ion-toolbar [hidden]="true">
       <ion-title>Menu</ion-title>
@@ -8,9 +8,18 @@
   <ion-content class="no-scroll">
     
       <ion-item class="text-center" style="background-color: #1C2833;border-bottom:solid #0072ff 2px;">
+        <ion-row>
+          <ion-col col-6>
           <img [src]="userProfile?.proPic" style="width:-10%;height:-10%;" class="avatar-menu">
-          <span style="color:white">{{userProfile?.name}}</span>
+          </ion-col>
+          <ion-col col-6>
+            <br><br>
+          <span style="color:white">{{userProfile?.firstname}}</span><br>
+          <span style="color:white">{{userProfile?.lastname}}</span>
+          </ion-col>
+          </ion-row>
         </ion-item>
+        
 
      
     
@@ -30,3 +39,5 @@
 
 <!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
+
+<!--<ion-nav [root]="rootPage" #content swipeEnabled="false" swipeBackEnabled="false" *ngIf="userType"></ion-nav>-->

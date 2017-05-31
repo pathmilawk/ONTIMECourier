@@ -13,9 +13,20 @@ import { HomePage } from '../pages/home/home';
 import { Login } from '../pages/login/login';
 import { ListPage } from '../pages/list/list';
 import { Signup } from '../pages/signup/signup';
+import { Homejob } from '../pages/homejob/homejob';
+import { Currentjobs } from '../pages/currentjobs/currentjobs';
+import { Completejobs } from '../pages/completejobs/completejobs';
+import { Profilejobs } from '../pages/profilejobs/profilejobs';
+import { Jobdetailmodal } from '../pages/jobdetailmodal/jobdetailmodal';
+import { Profile } from '../pages/profile/profile';
+import {Push} from '@ionic-native/push';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+
+import { Proceed } from '../pages/proceed/proceed';
+import { Jobs } from '../pages/jobs/jobs';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyDiEsYcLbpcWaQ0D-TuLSXV4Z7z21TNQRY",
@@ -32,7 +43,15 @@ export const firebaseConfig = {
     HomePage,
     ListPage,
     Login,
-    Signup
+    Signup,
+    Homejob,
+    Currentjobs,
+    Completejobs,
+    Profilejobs,
+    Jobdetailmodal,
+    Profile,
+    Proceed,
+    Jobs
   ],
   imports: [
     BrowserModule,
@@ -47,12 +66,21 @@ export const firebaseConfig = {
     HomePage,
     ListPage,
     Login,
-    Signup
+    Signup,
+    Homejob,
+    Currentjobs,
+    Completejobs,
+    Profilejobs,
+    Jobdetailmodal,
+    Profile,
+    Proceed,
+    Jobs
   ],
   providers: [
     StatusBar,
     SplashScreen,
     AuthService,
+    Push,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

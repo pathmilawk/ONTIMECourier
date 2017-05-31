@@ -15,7 +15,7 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 .avatar-menu {
-  border-radius: 100%;
+  border-radius: 50%;
   border: solid #0072ff 2px;
   height: 120px;
   width: 120px;
@@ -36,4 +36,8 @@
   background: -o-linear-gradient(right, #387ef5, #387ef5); /* For Opera 11.1 to 12.0 */
   background: -moz-linear-gradient(right, #387ef5, #387ef5); /* For Firefox 3.6 to 15 */
   background: linear-gradient(to right, #387ef5 , #387ef5); /* Standard syntax */
+}
+
+.img-circle {
+    border-radius: 50%;
 }

@@ -9,17 +9,33 @@ page-home {
       height: 100%;
   }
 
-.div1 {
+.fromDiv {
     width: 100%;
-    position: absolute;
-    z-index: 2;
+    position: relative;
+    z-index: 1;
+}
+
+.toDiv {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.search_list{
+    width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
 .div2 {
     height: 100%;
     width: 100%;
-    position: relative;
+      position: absolute;
+  left: 0;
+  top: 0;
 }
+
+
 
 
 

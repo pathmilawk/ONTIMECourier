@@ -1,0 +1,119 @@
+<!--
+  Generated template for the Signup page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="navbar" hideBackButton="true">
+    <ion-title style="color:white">Confirm Order</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="no-scroll">
+  
+  <div class="order_details">
+
+
+    <div class="list">
+
+      <div class="item item-divider">
+        <h3>Destination Details</h3>
+      </div>
+
+      <ion-list>
+        <ion-item>
+          <ion-row>
+            <ion-col col-1>
+              <ion-icon name="cash"></ion-icon>
+            </ion-col>
+            <ion-col col-5>
+              Distance
+            </ion-col>
+            <ion-col col-6>
+              <p>3.5 km</p>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+
+        <ion-item>
+          <ion-row>
+            <ion-col col-1>
+              <ion-icon name="time"></ion-icon>
+            </ion-col>
+            <ion-col col-5>
+              Duration
+            </ion-col>
+            <ion-col col-6>
+              <p>7min</p>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
+
+      <form [formGroup]="proceedForm" (submit)="submitProceedForm()">
+
+        <div class="item item-divider">
+          <h3>Item Details</h3>
+        </div>
+
+        <ion-list>
+          <ion-item>
+            <ion-row>
+              <ion-col col-1>
+                <ion-icon name="stopwatch"></ion-icon>
+              </ion-col>
+              <ion-col col-5>
+                Weight
+              </ion-col>
+              <ion-col col-6>
+                <select #weight formControlName="weight">
+                      <option value="1" selected="selected">1kg-5kg</option>
+                      <option value="2">5kg-10kg</option>
+                      <option value="3">10kg ></option>
+                    </select>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+
+          <ion-item>
+            <ion-row>
+              <ion-col col-1>
+                <ion-icon name="hand"></ion-icon>
+              </ion-col>
+              <ion-col col-5>
+                Fragile
+              </ion-col>
+              <ion-col col-6>
+                <select #fragile formControlName="fragile">
+                      <option value="1">Yes</option>
+                      <option value="2">No</option>
+                    </select>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-list>
+
+
+        <div style="margin: auto;text-align: center;">
+          <button type="submit" ion-button round class="sans-pro-light btnBotom" type="submit" style="background-color: #0072ff;">
+      Continue
+    </button>
+        </div>
+
+      </form>
+
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+</ion-content>

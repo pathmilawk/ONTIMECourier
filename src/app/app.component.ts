@@ -8,10 +8,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthService } from '../providers/auth-service';
 
 import { HomePage } from '../pages/home/home';
+import { Homejob } from '../pages/homejob/homejob';
 import { ListPage } from '../pages/list/list';
 import { Login } from '../pages/login/login';
 import { Signup } from '../pages/signup/signup';
+import { Currentjobs } from '../pages/currentjobs/currentjobs';
+import { Completejobs } from '../pages/completejobs/completejobs';
+import { Profilejobs } from '../pages/profilejobs/profilejobs';
+import { Profile } from '../pages/profile/profile';
+import { Jobdetailmodal } from '../pages/jobdetailmodal/jobdetailmodal';
+import {Push, PushObject, PushOptions} from '@ionic-native/push';
 
+
+import { Jobs } from '../pages/jobs/jobs';
 
 @Component({
   templateUrl: 'app.html'
@@ -21,21 +30,21 @@ export class MyApp {
 
   rootPage: any = Login;
   pages: Array<{ title: string, component: any }>;
-  activePage:any;
+  activePage: any;
   public userProfile: any;
   loading: Loading;
+  public userType: boolean;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public events: Events,
+  constructor(public platform: Platform, public statusBar: StatusBar, public push:Push, public splashScreen: SplashScreen, public events: Events,
     public alertCtrl: AlertController, public authProvider: AuthService, public loadingCtrl: LoadingController) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
-      
+
       { title: 'Home', component: HomePage },
-      { title: 'Login', component: Login },
-      { title: 'List', component: ListPage },
-      { title: 'Signup', component: Signup }
+      { title: 'Profile', component: Profile },
+      { title: 'History', component: Jobs }
     ];
 
     this.activePage = this.pages[0];
@@ -47,10 +56,17 @@ export class MyApp {
     events.subscribe('user:profiledetails', () => {
       this.getProfileDetails();
     });
+
+    events.subscribe('user:logout', () => {
+      this.logout();
+    });
     // events.subscribe('user:signup', () => {
     //   this.signUpTapped();
     // });
-
+events.subscribe('user:gotohome', () => {
+      this.gotohome();
+    });
+    this.pushsetup();
   }
 
   initializeApp() {
@@ -66,26 +82,38 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
-    this.activePage=page;
+    this.activePage = page;
   }
 
-  checkActive(page){
-    return page==this.activePage;
+  checkActive(page) {
+    return page == this.activePage;
   }
 
   loginTapped() {
     //this.nav.(HomePage);
-    this.nav.setRoot(HomePage);
+    this.authProvider.getUserProfile().then(profileSnap => {
+      this.userProfile = profileSnap;
+      if (this.userProfile.type == 0) {
+        this.nav.setRoot(Homejob);
+        this.userType = true;
+      }
+      else {
+        this.nav.setRoot(HomePage);
+        this.userType = false;
+      }
+    });
+    //alert(this.userProfile.name);
+
     // this.nav.push(HomePage);
     // this.nav.pop(Login);
   }
 
-  logout(){
+  logout() {
     this.authProvider.logoutUser()
-     .then( authData => {
+      .then(authData => {
         this.nav.setRoot(Login);
       }, error => {
-        this.loading.dismiss().then( () => {
+        this.loading.dismiss().then(() => {
           let alert = this.alertCtrl.create({
             message: error.message,
             buttons: [
@@ -99,12 +127,12 @@ export class MyApp {
         });
       });
 
-      this.loading = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-      });
-      this.loading.present();
-    }
-  
+    this.loading = this.loadingCtrl.create({
+      dismissOnPageChange: true,
+    });
+    this.loading.present();
+  }
+
 
   getProfileDetails(): any {
     this.authProvider.getUserProfile().then(profileSnap => {
@@ -112,6 +140,47 @@ export class MyApp {
       //console.log(this.userProfile.name);
     });
   }
+
+
+
+gotohome() {
+    
+    this.nav.pop();
+   
+  }
+
+
+pushsetup(){
+  console.log('Notifications');
+   const options: PushOptions = {
+     android: {
+        senderID: '471522107203'
+    },
+     ios: {
+         alert: 'true',
+         badge: true,
+         sound: 'false'
+     },
+     windows: {}
+  };
+ 
+  const pushObject: PushObject = this.push.init(options);
+ 
+  pushObject.on('notification').subscribe((notification: any) => {
+    if(notification.additionalData.foreground){
+      let youralert = this.alertCtrl.create({
+        title:'ONTIME Courier',
+        message: notification.message
+      });
+      youralert.present();
+    }
+  });
+ 
+  pushObject.on('registration').subscribe((registration: any) => console.log('Device registered', registration));
+ 
+  pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
+}
+
 
 }
 
